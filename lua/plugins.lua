@@ -49,19 +49,15 @@ return require('packer').startup(function(use)
   -- }
 
   -- dashboard
-  use {
-    'glepnir/dashboard-nvim',
-    event = 'VimEnter',
-    requires = {'nvim-tree/nvim-web-devicons'}
-  }
+  use 'glepnir/dashboard-nvim'
 
   -- Buffer line
   use 'akinsho/bufferline.nvim'
   -- Telescope
   use {
-      'nvim-telescope/telescope.nvim',
-      tag = '0.1.1',
-      requires = { { 'nvim-lua/plenary.nvim' } }
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.1',
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
   -- Complete
   use 'hrsh7th/cmp-nvim-lsp'

@@ -1,7 +1,6 @@
 require('options')
 require('plugins')
 require('colorscheme')
-require('dashboard-conf')
 require('func')
 require('nvim-tree').setup({
   sort_by = "case_sensitive",
@@ -72,4 +71,5 @@ require('nvim-treesitter.configs').setup({
     }
   }
 })
+require('dashboard-conf')
 
