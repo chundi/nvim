@@ -14,6 +14,9 @@ return require('packer').startup(function(use)
   use 'Mofiqul/dracula.nvim'
   use 'morhetz/gruvbox'
 
+  -- Transparent background
+  use 'xiyaowong/transparent.nvim'
+
   -- Language Server Protocol Configuration
   use 'neovim/nvim-lspconfig'
   -- Language Server Protocol Manager
