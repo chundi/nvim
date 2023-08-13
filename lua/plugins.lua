@@ -14,6 +14,12 @@ return require('packer').startup(function(use)
   use 'Mofiqul/dracula.nvim'
   use 'morhetz/gruvbox'
 
+  -- Terminal
+  -- Alt+= to open Terminal
+  -- Alt+Shift+k/j to switch window
+  -- Alt+q to Normal mode
+  use 'skywind3000/vim-terminal-help'
+
   -- Transparent background
   use 'xiyaowong/transparent.nvim'
 
