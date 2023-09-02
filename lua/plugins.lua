@@ -13,6 +13,7 @@ return require('packer').startup(function(use)
   use 'rafamadriz/neon'
   use 'Mofiqul/dracula.nvim'
   use 'morhetz/gruvbox'
+  use 'fneu/breezy'
 
   -- Terminal
   -- Alt+= to open Terminal
