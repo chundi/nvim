@@ -6,6 +6,8 @@
 -- vim.wo.{option}: window-local 选项
 -- 也可以都放到 vim.opt 下
 
+-- Codeium
+vim.g.codeium_enabled = true
 -- 自动补全不自动选中
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 -- 补全增强

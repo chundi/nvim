@@ -7,6 +7,9 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  -- Codeium
+  use 'Exafunction/codeium.vim'
+
   -- Colorschemes
   use 'rebelot/kanagawa.nvim'
   use 'titanzero/zephyrium'
@@ -22,6 +25,7 @@ return require('packer').startup(function(use)
   use 'skywind3000/vim-terminal-help'
 
   -- Transparent background
+  -- Usage: :TransparentEnable
   use 'xiyaowong/transparent.nvim'
 
   -- Language Server Protocol Configuration
