@@ -8,7 +8,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- Codeium
-  use 'Exafunction/codeium.vim'
+  -- use 'Exafunction/codeium.vim'
 
   -- Colorschemes
   use 'rebelot/kanagawa.nvim'
@@ -17,6 +17,7 @@ return require('packer').startup(function(use)
   use 'Mofiqul/dracula.nvim'
   use 'morhetz/gruvbox'
   use 'fneu/breezy'
+  use "folke/tokyonight.nvim"
 
   -- Terminal
   -- Alt+= to open Terminal
@@ -54,23 +55,28 @@ return require('packer').startup(function(use)
   -- Fast brackets adding
   use 'tpope/vim-surround'
   -- Status line
-  -- use {
-  --     'nvim-lualine/lualine.nvim',
-  --     requires = {
-  --         'kyazdani42/nvim-web-devicons',
-  --         opt = true
-  --     }
-  -- }
+  use {
+      'nvim-lualine/lualine.nvim',
+      requires = {
+          'nvim-tree/nvim-web-devicons',
+          opt = true
+      }
+  }
 
   -- dashboard
   use 'glepnir/dashboard-nvim'
 
   -- Buffer line
-  use 'akinsho/bufferline.nvim'
+  use {
+    'akinsho/bufferline.nvim',
+    tag = "*",
+    requires = 'nvim-tree/nvim-web-devicons'
+  }
+
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+    tag = '0.1.4',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
   -- Complete
