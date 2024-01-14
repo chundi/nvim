@@ -1,14 +1,13 @@
 require('dashboard').setup {
   theme = 'hyper',
+  shortcut_type = 'number',
   preview = {
     command,
     file_path
   },
   config = {
     week_header = {
-      enable,
-      concat,
-      append
+      enable = true
     },
     packages = {
       enable = true

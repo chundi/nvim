@@ -68,8 +68,8 @@ vim.bo.shiftwidth = 4
 -- 当文件被外部程序修改时，自动加载
 vim.opt.autoread = true
 
--- 禁止折行
-vim.wo.wrap = false
+-- 是否自动折行
+vim.wo.wrap = true
 
 -- 颜色显示
 vim.opt.background = "dark"
