@@ -18,6 +18,7 @@ return require('packer').startup(function(use)
   use 'morhetz/gruvbox'
   use 'fneu/breezy'
   use "folke/tokyonight.nvim"
+  use "lunarvim/synthwave84.nvim"
 
   -- Terminal
   -- Alt+= to open Terminal
@@ -64,21 +65,20 @@ return require('packer').startup(function(use)
   }
 
   -- dashboard
-  use 'glepnir/dashboard-nvim'
+  use 'nvimdev/dashboard-nvim'
 
   -- Buffer line
   use {
     'akinsho/bufferline.nvim',
-    tag = "*",
     requires = 'nvim-tree/nvim-web-devicons'
   }
 
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.4',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
+
   -- Complete
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
@@ -98,7 +98,7 @@ return require('packer').startup(function(use)
   use 'tree-sitter/tree-sitter-java'
   use 'tree-sitter/tree-sitter-go'
   use 'tree-sitter/tree-sitter-python'
-  use 'HiPhish/nvim-ts-rainbow2'
+  use 'HiPhish/rainbow-delimiters.nvim'
 
   -- Comment toggler
   use 'terrortylor/nvim-comment'
