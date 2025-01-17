@@ -83,3 +83,45 @@ vim.opt.listchars = "space:·"
 -- 是否显示当前模式是 --INSERT-- 还是 --NORMAL-- 等
 vim.opt.showmode = false
 
+-- 基础折叠设置
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99
+vim.opt.foldnestmax = 10
+
+-- 自定义折叠显示
+vim.opt.foldtext = [[substitute(getline(v:foldstart),'\\t',repeat('\ ',&tabstop),'g').'...'.trim(getline(v:foldend)) ]]
+vim.opt.fillchars = "fold: "
+
+-- 为 Python 和 Java 分别设置折叠规则
+-- Python 折叠规则
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python" },
+  callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+  end
+})
+
+-- Java 折叠规则
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "java" },
+  callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+  end
+})
+
+-- 定义代码折叠快捷键
+-- 折叠代码
+vim.api.nvim_set_keymap('n', 'zc', ':foldclose<CR>', { noremap = true, silent = true })
+-- 打开折叠
+vim.api.nvim_set_keymap('n', 'zo', ':foldopen<CR>', { noremap = true, silent = true })
+-- 切换折叠状态
+vim.api.nvim_set_keymap('n', 'za', ':fold<CR>', { noremap = true, silent = true })
+-- 打开所有折叠
+vim.api.nvim_set_keymap('n', 'zR', ':set foldlevel=99<CR>', { noremap = true, silent = true })
+-- 收起所有折叠
+vim.api.nvim_set_keymap('n', 'zM', ':set foldlevel=0<CR>', { noremap = true, silent = true })
+

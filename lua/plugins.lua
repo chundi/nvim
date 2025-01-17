@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
   use 'fneu/breezy'
   use "folke/tokyonight.nvim"
   use "lunarvim/synthwave84.nvim"
+  use "projekt0n/github-nvim-theme"
 
   -- Terminal
   -- Alt+= to open Terminal
