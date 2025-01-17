@@ -47,6 +47,7 @@ require('nvim-tree').setup({
     dotfiles = false
   }
 })
+
 require('mason').setup({
   ui = {
     icons = {
@@ -56,7 +57,6 @@ require('mason').setup({
     }
   }
 })
-
 
 -- treesitter 配置
 require('nvim-treesitter.configs').setup({
@@ -92,6 +92,7 @@ require("transparent").setup({
   }, -- table: additional groups that should be cleared
   exclude_groups = {}, -- table: groups you don't want to clear
 })
+vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "ExtraGroup" })
 
 -- 设置 lualine 透明
 -- require('transparent').clear_prefix('lualine')
@@ -104,8 +105,15 @@ require('lualine').setup({
 })
 
 vim.opt.termguicolors = true
-require('bufferline').setup {}
-vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "ExtraGroup" })
+
+local bufferline = require('bufferline')
+bufferline.setup {
+  options = {
+    mode = "tabs",
+    separator_style = "slant",
+  }
+}
+
 
 -- 主题 tokyonight 配置，此处只配置了背景是否透明
 require('tokyonight').setup { transparent = vim.g.transparent_enabled }

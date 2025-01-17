@@ -125,5 +125,8 @@ vim.api.nvim_set_keymap('n', 'zR', ':set foldlevel=99<CR>', { noremap = true, si
 -- 收起所有折叠
 vim.api.nvim_set_keymap('n', 'zM', ':set foldlevel=0<CR>', { noremap = true, silent = true })
 -- 绑定 gn 和 gp 到切换 buffer
-vim.api.nvim_set_keymap('n', 'gn', ':bnext<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'gp', ':bprevious<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gn', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gt', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gp', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'gT', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+
