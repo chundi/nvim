@@ -1,6 +1,6 @@
 -- 字体
 -- vim.o.guifont = "Maple Mono SC NF:h12"
-vim.o.guifont = "LXGWWenKaiMono Nerd Font:h16:b:#e-subpixelantialias:#h-slight"
+vim.o.guifont = "LXGWWenKaiMono Nerd Font:h24:b:#e-subpixelantialias:#h-slight"
 
 -- 主题
 -- vim.g.neovide_theme = "tokyonight"
@@ -17,9 +17,11 @@ vim.g.neovide_padding_left = 5
 
 -- 配置透明和模糊
 local alpha = function()
-  return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
+  -- return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
+  return string.format("%x", math.floor(255 * vim.g.opacity or 0.8))
 end
-vim.g.neovide_transparency = 0.6
+-- vim.g.neovide_transparency = 0.6
+vim.g.neovide_opacity = 0.6
 vim.g.neovide_window_blurred = true
 
 vim.g.neovide_floating_blur_amount_x = 5.0

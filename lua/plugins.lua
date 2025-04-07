@@ -110,4 +110,6 @@ return require('packer').startup(function(use)
   -- Color Preview
   use 'norcalli/nvim-colorizer.lua'
 
+  -- Java
+  use 'mfussenegger/nvim-jdtls'
 end)

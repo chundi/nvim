@@ -100,7 +100,7 @@ vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "Ex
 -- lualine 配置
 require('lualine').setup({
   options = {
-    theme = 'github_light'
+    theme = 'auto'
   }
 })
 
@@ -162,3 +162,6 @@ vim.g.rainbow_delimiters = {
 if vim.g.neovide then
   require('neovide')
 end
+
+require('lsp-setup')
+
