@@ -94,7 +94,12 @@ return require('packer').startup(function(use)
   -- Complete icons
   use 'onsails/lspkind-nvim'
   -- Treesitter
-  use 'nvim-treesitter/nvim-treesitter'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
+  use 'nvim-treesitter/nvim-treesitter-textobjects'
+  use 'simrat39/symbols-outline.nvim'
   use 'tree-sitter/tree-sitter-rust'
   use 'tree-sitter/tree-sitter-java'
   use 'tree-sitter/tree-sitter-go'

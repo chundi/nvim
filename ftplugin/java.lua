@@ -39,13 +39,17 @@ local config = {
     -- 还有其它模式，参考帮助文档
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
     -- 跳转到声明
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set('n', 'gD', ':Telescope lsp_type_definitions<CR>')
     -- 跳转到定义
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'gd', ':Telescope lsp_definitions<CR>')
     -- 跳转到实现
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', 'gi', ':Telescope lsp_implementations<CR>')
     -- 查看引用
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>')
     -- 显示文档/悬停信息
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     -- 显示签名帮助
@@ -118,7 +122,7 @@ local config = {
         runtimes = {
           {
             name = "JavaSE-21", -- 根据你的项目需求调整
-            path = vim.fn.expand("$JAVA_HOME"),
+            path = vim.env.JAVA_HOME,
           },
         }
       },

@@ -1,3 +1,4 @@
+require('env')
 require('options')
 require('plugins')
 require('colorscheme')
@@ -164,4 +165,8 @@ if vim.g.neovide then
 end
 
 require('lsp-setup')
+require('symbols-outline').setup()
+
+vim.api.nvim_set_keymap('n', '<F8>', ':SymbolsOutline<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F2>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
