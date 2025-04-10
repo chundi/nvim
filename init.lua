@@ -167,6 +167,10 @@ end
 require('lsp-setup')
 require('symbols-outline').setup()
 
+-- glow 配置
+require('glow-conf')
+
 vim.api.nvim_set_keymap('n', '<F8>', ':SymbolsOutline<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F2>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+
 

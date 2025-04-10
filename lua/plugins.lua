@@ -117,4 +117,17 @@ return require('packer').startup(function(use)
 
   -- Java
   use 'mfussenegger/nvim-jdtls'
+
+  -- markdown
+  use {
+    "ellisonleao/glow.nvim",
+    config = function()
+      require("glow").setup({
+        -- basic config
+        paper = false,
+        width_ratio = 0.8,
+        height_ratio = 0.8,
+      })
+    end
+  }
 end)
