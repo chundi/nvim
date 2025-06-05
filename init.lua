@@ -89,7 +89,8 @@ require("transparent").setup({
     'SignColumn', 'CursorLineNr', 'EndOfBuffer',
   },
   extra_groups = {
-    'NvimTreeNormal', 'StatusLine', 'StatusLineNC', 'TabLine', 'TabineFill', 'TabLineSel', 'VertSplit',
+    'NvimTreeNormal', 'StatusLine', 'StatusLineNC', 'TabLine', 'TabLineFill',
+    'TabLineSel', 'VertSplit',
   }, -- table: additional groups that should be cleared
   exclude_groups = {}, -- table: groups you don't want to clear
 })
@@ -111,7 +112,7 @@ local bufferline = require('bufferline')
 bufferline.setup {
   options = {
     mode = "tabs",
-    separator_style = "slant",
+    separator_style = "thick",
   }
 }
 
