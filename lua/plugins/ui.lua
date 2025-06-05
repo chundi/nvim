@@ -110,24 +110,7 @@ return {
       }
     end,
   },
-  { "xiyaowong/transparent.nvim",
-    config = function()
-      require("transparent").setup({
-        groups = {
-          'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
-          'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
-          'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
-          'SignColumn', 'CursorLineNr', 'EndOfBuffer',
-        },
-        extra_groups = {
-          'NvimTreeNormal', 'StatusLine', 'StatusLineNC', 'TabLine', 'TabLineFill',
-          'TabLineSel', 'VertSplit',
-        },
-        exclude_groups = {},
-      })
-      vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "ExtraGroup" })
-    end,
-  },
+  { "xiyaowong/transparent.nvim" },
   { "nvim-tree/nvim-web-devicons" },
   { "stevearc/aerial.nvim" },
   { "norcalli/nvim-colorizer.lua" },
