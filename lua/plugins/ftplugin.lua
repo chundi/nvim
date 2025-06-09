@@ -32,15 +32,22 @@ return {
     ft = "java",
     config = function()
       -- 这里直接粘贴 java.lua 的内容
-      local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle'})
+      local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle', '.github', '.idea', '.vscode'})
       if root_dir == "" then return end
       local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
-      local workspace_dir = vim.fn.expand('~/Projects/opensource/') .. project_name
-      local mason_registry = require('mason-registry')
-      local jdtls_pkg = mason_registry.get_package("jdtls")
-      local jdtls_path = jdtls_pkg.install_path or (jdtls_pkg.get_install_path and jdtls_pkg:get_install_path()) or ""
+      local workspace_dir = vim.fn.expand('~/Projects/lsp_data/') .. project_name
+      local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
       local launcher_jar = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-      local platform_config = jdtls_path .. "/config_mac"
+      local uname = vim.loop.os_uname().sysname
+      local jdtls_platform
+      if uname == "Darwin" then
+        jdtls_platform = "mac"
+      elseif uname == "Linux" then
+        jdtls_platform = "linux"
+      else
+        jdtls_platform = "win"
+      end
+      local platform_config = jdtls_path .. "/config_" .. jdtls_platform
       local config = {
         cmd = {
           'java',
