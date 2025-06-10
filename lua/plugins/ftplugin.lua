@@ -31,125 +31,170 @@ return {
     "mfussenegger/nvim-jdtls",
     ft = "java",
     config = function()
-      -- 这里直接粘贴 java.lua 的内容
-      local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle', '.github', '.idea', '.vscode'})
-      if root_dir == "" then return end
-      local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
-      local workspace_dir = vim.fn.expand('~/Projects/lsp_data/') .. project_name
-      local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
-      local launcher_jar = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-      local uname = vim.loop.os_uname().sysname
-      local jdtls_platform
-      if uname == "Darwin" then
-        jdtls_platform = "mac"
-      elseif uname == "Linux" then
-        jdtls_platform = "linux"
-      else
-        jdtls_platform = "win"
-      end
-      local platform_config = jdtls_path .. "/config_" .. jdtls_platform
-      local config = {
-        cmd = {
-          'java',
-          '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-          '-Dosgi.bundles.defaultStartLevel=4',
-          '-Declipse.product=org.eclipse.jdt.ls.core.product',
-          '-Dlog.protocol=true',
-          '-Dlog.level=ALL',
-          '-Xms1g',
-          '--add-modules=ALL-SYSTEM',
-          '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-          '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-          '-jar', launcher_jar,
-          '-configuration', platform_config,
-          '-data', workspace_dir,
-        },
-        root_dir = root_dir,
-        on_attach = function(client, bufnr)
-          local bufopts = { noremap=true, silent=true, buffer=bufnr }
-          vim.keymap.set('n', 'gD', ':Telescope lsp_type_definitions<CR>')
-          vim.keymap.set('n', 'gd', ':Telescope lsp_definitions<CR>')
-          vim.keymap.set('n', 'gi', ':Telescope lsp_implementations<CR>')
-          vim.keymap.set('n', 'gr', ':Telescope lsp_references<CR>')
-          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-          vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-          vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-          vim.keymap.set('n', '<leader>oi', "<Cmd>lua require'jdtls'.organize_imports()<CR>", bufopts)
-          vim.keymap.set('n', '<leader>ev', "<Cmd>lua require'jdtls'.extract_variable()<CR>", bufopts)
-          vim.keymap.set('v', '<leader>ev', "<Esc><Cmd>lua require'jdtls'.extract_variable(true)<CR>", bufopts)
-          vim.keymap.set('n', '<leader>ec', "<Cmd>lua require'jdtls'.extract_constant()<CR>", bufopts)
-          vim.keymap.set('v', '<leader>ec', "<Esc><Cmd>lua require'jdtls'.extract_constant(true)<CR>", bufopts)
-          vim.keymap.set('v', '<leader>em', "<Esc><Cmd>lua require'jdtls'.extract_method(true)<CR>", bufopts)
-        end,
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
-        settings = {
-          java = {
-            signatureHelp = { enabled = true },
-            contentProvider = { preferred = 'fernflower' },
-            completion = {
-              favoriteStaticMembers = {
-                "org.hamcrest.MatcherAssert.assertThat",
-                "org.hamcrest.Matchers.*",
-                "org.hamcrest.CoreMatchers.*",
-                "org.junit.jupiter.api.Assertions.*",
-                "java.util.Objects.requireNonNull",
-                "java.util.Objects.requireNonNullElse",
-                "org.mockito.Mockito.*"
-              },
-              filteredTypes = {
-                "com.sun.*",
-                "io.micrometer.shaded.*",
-                "java.awt.*",
-                "jdk.*", 
-                "sun.*",
-              },
+      -- 确保只对 Java 文件执行一次初始化
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'java',
+        callback = function()
+          -- 获取当前文件所在的项目根目录
+          local root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle', '.github', '.idea', '.vscode'})
+          if not root_dir then return end
+          
+          -- 检查是否已经为这个项目创建了客户端
+          local project_name = vim.fn.fnamemodify(root_dir, ':p:h:t')
+          local workspace_dir = vim.fn.expand('~/Projects/lsp_data/') .. project_name
+          
+          -- 设置 JDTLS 路径
+          local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
+          local launcher_jar = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+          
+          -- 检测操作系统
+          local uname = vim.loop.os_uname().sysname
+          local jdtls_platform = 'linux' -- 默认为 linux
+          if uname == 'Darwin' then
+            jdtls_platform = 'mac'
+          elseif uname == 'Windows' or uname == 'Windows_NT' then
+            jdtls_platform = 'win'
+          end
+          
+          local platform_config = jdtls_path .. "/config_" .. jdtls_platform
+          
+          -- 设置 LSP 配置
+          local config = {
+            cmd = {
+              'java',
+              '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+              '-Dosgi.bundles.defaultStartLevel=4',
+              '-Declipse.product=org.eclipse.jdt.ls.core.product',
+              '-Dlog.protocol=true',
+              '-Dlog.level=ALL',
+              '-Xms1g',
+              '--add-modules=ALL-SYSTEM',
+              '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+              '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+              '-jar', launcher_jar,
+              '-configuration', platform_config,
+              '-data', workspace_dir,
             },
-            sources = {
-              organizeImports = {
-                starThreshold = 9999,
-                staticStarThreshold = 9999,
-              },
+            root_dir = root_dir,
+            on_attach = function(client, bufnr)
+              -- 设置缓冲区本地键位映射
+              local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+              local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+              
+              -- 启用补全功能
+              buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+              
+              -- 设置键位映射
+              local opts = { noremap=true, silent=true }
+              buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+              buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+              buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+              buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+              buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+              buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+              buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+              buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+              buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+              
+              -- JDTLS 特定命令
+              buf_set_keymap('n', '<leader>oi', "<cmd>lua require'jdtls'.organize_imports()<CR>", opts)
+              buf_set_keymap('n', '<leader>ev', "<cmd>lua require'jdtls'.extract_variable()<CR>", opts)
+              buf_set_keymap('v', '<leader>ev', "<esc><cmd>lua require'jdtls'.extract_variable(true)<CR>", opts)
+              buf_set_keymap('n', '<leader>ec', "<cmd>lua require'jdtls'.extract_constant()<CR>", opts)
+              buf_set_keymap('v', '<leader>ec', "<esc><cmd>lua require'jdtls'.extract_constant(true)<CR>", opts)
+              buf_set_keymap('v', '<leader>em', "<esc><cmd>lua require'jdtls'.extract_method(true)<CR>", opts)
+              
+              -- 设置高亮
+              if client.supports_method('textDocument/documentHighlight') then
+                vim.api.nvim_exec([[
+                  augroup lsp_document_highlight
+                    autocmd! * <buffer>
+                    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+                  augroup END
+                ]], false)
+              end
+              
+              -- 设置格式化选项
+              client.server_capabilities.documentFormattingProvider = true
+              client.server_capabilities.documentRangeFormattingProvider = true
+            end,
+            capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+            flags = {
+              debounce_text_changes = 150,
             },
-            codeGeneration = {
-              toString = {
-                template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
-              },
-              hashCodeEquals = {
-                useJava7Objects = true,
-              },
+            init_options = {
+              extendedClientCapabilities = require('jdtls').extendedClientCapabilities,
             },
-            configuration = {
-              runtimes = {
-                {
-                  name = "JavaSE-21",
-                  path = vim.env.JAVA_HOME,
-                },
-              }
-            },
-            inlayHints = { parameterNames = { enabled = true } },
-            autobuild = { enabled = true },
-            import = {
-              maven = { enabled = true },
-              gradle = { enabled = true },
-            },
-            project = {
-              referencedLibraries = {
-                include = jdtls_path .. "/lombok.jar",
-              },
-            },
-            workspace = {
-              preloadSources = true,
-              maxConcurrentBuilds = 4,
-            }
           }
-        },
-        init_options = {
-          bundles = {}
-        },
-      }
-      require('jdtls').start_or_attach(config)
+          
+          -- 添加 settings 到 config
+          config.settings = {
+            java = {
+              signatureHelp = { enabled = true },
+              contentProvider = { preferred = 'fernflower' },
+              completion = {
+                favoriteStaticMembers = {
+                  "org.hamcrest.MatcherAssert.assertThat",
+                  "org.hamcrest.Matchers.*",
+                  "org.hamcrest.CoreMatchers.*",
+                  "org.junit.jupiter.api.Assertions.*",
+                  "java.util.Objects.requireNonNull",
+                  "java.util.Objects.requireNonNullElse",
+                  "org.mockito.Mockito.*"
+                },
+                filteredTypes = {
+                  "com.sun.*",
+                  "io.micrometer.shaded.*",
+                  "java.awt.*",
+                  "jdk.*", 
+                  "sun.*",
+                },
+              },
+              sources = {
+                organizeImports = {
+                  starThreshold = 9999,
+                  staticStarThreshold = 9999,
+                },
+              },
+              codeGeneration = {
+                toString = {
+                  template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
+                },
+                hashCodeEquals = {
+                  useJava7Objects = true,
+                },
+              },
+              configuration = {
+                runtimes = {
+                  {
+                    name = "JavaSE-21",
+                    path = vim.env.JAVA_HOME,
+                  },
+                }
+              },
+              inlayHints = { parameterNames = { enabled = true } },
+              autobuild = { enabled = true },
+              import = {
+                maven = { enabled = true },
+                gradle = { enabled = true },
+              },
+              project = {
+                referencedLibraries = {
+                  include = jdtls_path .. "/lombok.jar",
+                },
+              },
+              workspace = {
+                preloadSources = true,
+                maxConcurrentBuilds = 4,
+              }
+            }
+          },
+          
+          -- 启动 JDTLS
+          require('jdtls').start_or_attach(config)
+        end,
+      })
     end,
   },
-} 
+}
