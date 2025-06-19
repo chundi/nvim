@@ -20,7 +20,7 @@ return {
   { "ray-x/lsp_signature.nvim" },
   { "stevearc/aerial.nvim" },
   { "mfussenegger/nvim-jdtls" },
-  { "simrat39/symbols-outline.nvim" },
+
   { "hrsh7th/nvim-cmp" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-buffer" },
@@ -100,4 +100,4 @@ return {
     end
   },
   { "norcalli/nvim-colorizer.lua" },
-} 
+}

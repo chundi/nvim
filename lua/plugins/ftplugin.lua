@@ -1,16 +1,35 @@
 return {
   {
-    "nvimtools/none-ls.nvim",
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "isort", "black" },
+        -- 添加其他文件类型的格式化程序
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
     config = function()
-      local none_ls = require("null-ls")
-      none_ls.setup({
-        sources = {
-          none_ls.builtins.formatting.black,
-          none_ls.builtins.diagnostics.flake8,
-        },
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        python = { "flake8" },
+        -- 添加其他文件类型的 linter
+      }
+      vim.api.nvim_create_autocmd({"BufWritePost", "BufEnter", "InsertLeave"}, {
+        group = vim.api.nvim_create_augroup("nvim-lint", {clear = true}),
+        callback = function()
+          lint.try_lint()
+        end,
       })
     end,
   },
+
   {
     "neovim/nvim-lspconfig",
     ft = "python",

@@ -114,10 +114,17 @@ return {
   { "nvim-tree/nvim-web-devicons" },
   { "stevearc/aerial.nvim" },
   { "norcalli/nvim-colorizer.lua" },
-  { "simrat39/symbols-outline.nvim",
-    config = function()
-      require("symbols-outline").setup()
-    end,
+
+  {
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
+    keys = {
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
+    opts = {
+      -- Your setup opts here
+    },
   },
   { "HiPhish/rainbow-delimiters.nvim",
     config = function()
@@ -147,4 +154,4 @@ return {
       }
     end,
   },
-} 
+}
